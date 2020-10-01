@@ -33,7 +33,7 @@ of comment in the source code.
 #+BEGIN_SRC 
 syntax on                       "Enables syntax highlighting
 
-set noerrorbells                "Desable the sound on error
+set noerrorbells                "Disable the sound on error
 set tabstop=4 softtabstop=4     "Insert 3 spaces for a tab
 set shiftwidth=4                "Changes the number of spaces chanracters inserted for indentation
 set smarttab                    "Makes tabbing smarter, it realize you have 2 vs 4
@@ -42,15 +42,15 @@ set smartindent                 "Enables smart indent
 set cmdheight=2                 "More space for displaying messages
 set nu                          "Enables numberline
 set relativenumber              "Enables relative number line
-set nowrap                      "Desable the wrapping of long line test it will be now on single line
+set nowrap                      "Disable the wrapping of long line test it will be now on single line
 set smartcase                   "Only applies to search patterns that you type 
-set mouse=a                     "Enables the mounse 
+set mouse=a                     "Enables the mouse 
 set splitbelow                  "Split horizontal window to below
 set splitright                  "Split the vertical window to the right
 set t_Co=256                    "Support 256 colors
 set autoindent                  "Good auto indent
-set noswapfile                  "Desable the creation of swap file for every file opened in vim
-set nobackup                    "Desable the creation of backup file in vim
+set noswapfile                  "Disable the creation of swap file for every file opened in vim
+set nobackup                    "Disable the creation of backup file in vim
 set undodir=~/.vim/undodir      "Save our undo action to a particular directory
 set undofile                    "Creates a undo file 
 set incsearch                   "Enables increamental search
