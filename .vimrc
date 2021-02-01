@@ -1,4 +1,3 @@
-
 syntax on                       "Enables syntax highlighting
 
 set noerrorbells                "Desable the sound on error
@@ -23,7 +22,6 @@ set undodir=~/.vim/undodir      "Save our undo action to a particular directory
 set undofile                    "Creates a undo file 
 set incsearch                   "Enables increamental search
 set clipboard=unnamedplus       "Enables the clipboard support in vim now it shares the clipboard of the windows 
-set cursorline                  "Highlight the current line 
 set formatoptions-=cro          "Stop newline continuation of comments
 set colorcolumn=100             "Set the vertical color column after 100 character length
 
@@ -31,8 +29,13 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 "Here below the is the call plug#begin, list of all the plugins I use, Using vim-plug
 call plug#begin('~/.vim/plugged')     "Start of vim-plug plugin listing
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+"Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'morhetz/gruvbox'
+Plug 'junegunn/goyo.vim'
+"Plugin for colorschemes
+Plug 'flazz/vim-colorschemes'
+Plug 'felixhummel/setcolors.vim'
+Plug 'gko/vim-coloresque'
 Plug 'jremmen/vim-ripgrep'
 Plug 'tpope/vim-fugitive'
 Plug 'preservim/nerdtree'
@@ -41,7 +44,7 @@ Plug 'vim-utils/vim-man'
 Plug 'lyuts/vim-rtags'
 "Plug 'git@github.com:kien/ctrlp.vim.git'
 "Plug 'git@github.com:Valloric/YouCompleteMe.git'
-Plug 'ycm-core/YouCompleteMe'
+"Plug 'ycm-core/YouCompleteMe'
 Plug 'kien/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'jiangmiao/auto-pairs'
@@ -49,14 +52,13 @@ Plug 'jiangmiao/auto-pairs'
 
 call plug#end()                 "End of vim-plug plugin listing
 
-
 colorscheme gruvbox             "Setting colorscheme to gruvbox
 set background=dark             "Set background to dark
 
 if executable('rg')
     let g:rg_derive_root='true'
 endif
-let g:ycm_global_ycm_extra_conf = "~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py"
+"let g:ycm_global_ycm_extra_conf = "~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py"
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude standard']
 
 
@@ -66,16 +68,16 @@ let g:netrw_winsize = 25
 
 let g:ctrlp_use_caching = 0
 
-
-"YCM
-"The best part
-
-nnoremap <silent> <Leader>gd :YcmCompleter GoTo<CR>
-nnoremap <silent> <Leader>gf :YcmCompleter FixIt<CR>
-
 "Below are the some of my keybindings that I personaly used to ooptimize my workflow
 
 let mapleader = " "             "Leader key set to space bar
+
+"For colorschemes
+nnoremap <leader>c :colorscheme
+
+"For NerdTree
+nnoremap <leader>. :NERDTree<CR>
+
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
@@ -102,7 +104,16 @@ inoremap <c-u> <Esc>viwUi
 inoremap <c-u> viwU<Esc>
 
 
+"Desables automatic commenting on new line
+"autocmd FileType *setlocal formatoptions-=cro formatoptions-=r formatoptions-=o
 
+"Delete all trailing whitespaces
+"autocmd BufWritePre *%s/\s\+$//e
 
+"Set width of goyo
+"autocmd BufRead.BufNewFile /tmp/neomutt* let g:goyo_width=80
+"autocmd BufRead.BufNewFile /tmp/neomutt* :Goyo
 
+"Goyo
+nnoremap <leader>f :Goyo<CR>
 
