@@ -56,7 +56,7 @@ call plug#end()                 "End of vim-plug plugin listing
 set background=dark
 colorscheme Tomorrow-Night-Bright
 
-"setting a default shell
+"setting a default font
 set guifont=Source\ Code\ Pro:h11
 
 "To desable errorbell
