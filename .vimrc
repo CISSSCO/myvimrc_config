@@ -1,6 +1,10 @@
 syntax on                       "Enables syntax highlighting
+filetype on
+filetype indent on
+filetype plugin on
 
-set noerrorbells                "Desable the sound on error
+
+set backspace=2
 set tabstop=4 softtabstop=4     "Insert 3 spaces for a tab
 set shiftwidth=4                "Changes the number of spaces chanracters inserted for indentation
 set smarttab                    "Makes tabbing smarter, it realize you have 2 vs 4
@@ -21,9 +25,6 @@ set nobackup                    "Desable the creation of backup file in vim
 set undodir=~/.vim/undodir      "Save our undo action to a particular directory
 set undofile                    "Creates a undo file 
 set incsearch                   "Enables increamental search
-set clipboard=unnamedplus       "Enables the clipboard support in vim now it shares the clipboard of the windows 
-set formatoptions-=cro          "Stop newline continuation of comments
-set colorcolumn=100             "Set the vertical color column after 100 character length
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
@@ -35,10 +36,10 @@ Plug 'junegunn/goyo.vim'
 "Plugin for colorschemes
 Plug 'flazz/vim-colorschemes'
 Plug 'felixhummel/setcolors.vim'
+Plug 'vim-scripts/Conque-Shell'
 Plug 'gko/vim-coloresque'
-Plug 'jremmen/vim-ripgrep'
-Plug 'tpope/vim-fugitive'
 Plug 'preservim/nerdtree'
+Plug 'mhinz/vim-startify'
 Plug 'leafgarland/typescript-vim'
 Plug 'vim-utils/vim-man'
 Plug 'lyuts/vim-rtags'
@@ -49,18 +50,20 @@ Plug 'kien/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'jiangmiao/auto-pairs'
 
-
 call plug#end()                 "End of vim-plug plugin listing
 
-colorscheme gruvbox             "Setting colorscheme to gruvbox
-set background=dark             "Set background to dark
 
-if executable('rg')
-    let g:rg_derive_root='true'
+set background=dark
+colorscheme Tomorrow-Night-Bright
+
+"setting a default shell
+set guifont=Source\ Code\ Pro:h11
+
+"To desable errorbell
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
 endif
-"let g:ycm_global_ycm_extra_conf = "~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py"
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude standard']
-
 
 let g:netrw_browse_split=2
 let g:netrw_banner = 0
@@ -114,6 +117,12 @@ inoremap <c-u> viwU<Esc>
 "autocmd BufRead.BufNewFile /tmp/neomutt* let g:goyo_width=80
 "autocmd BufRead.BufNewFile /tmp/neomutt* :Goyo
 
+"using tab to navigate around the end to start of a code block
+map <TAB> %
+
 "Goyo
 nnoremap <leader>f :Goyo<CR>
 
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q!<CR>
+nnoremap <leader>x :x<CR>
