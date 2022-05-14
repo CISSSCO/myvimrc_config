@@ -6,7 +6,15 @@
 - [[#imports][IMPORTS]]
 - [[#plugins][PLUGINS]]
 - [[#colorschemetheme][COLORSCHEME/THEME]]
+- [[#font][FONT]]
 - [[#keybindings][KEYBINDINGS]]
+- [[#personal-preferences][PERSONAL PREFERENCES]]
+  - [[#to-desable-errorbell][To desable errorbell]]
+  - [[#last-edit-position][Last edit position]]
+  - [[#hide-gui][Hide GUI]]
+  - [[#function-to-enable-the-gui][Function to enable the GUI]]
+  - [[#fixing-ctrlbackspace][Fixing Ctrl+Backspace]]
+  - [[#favorite][Favorite]]
 - [[#miscellaneous][MISCELLANEOUS]]
 
 * ABOUT
@@ -30,10 +38,15 @@ These are basically the  default setting that everyone uses while working in vim
 The basic functionality of any command is also indicated there in the form
 of comment in the source code.
 
-#+BEGIN_SRC 
+#+BEGIN_SRC
 syntax on                       "Enables syntax highlighting
+filetype on
+filetype indent on
+filetype plugin on
 
-set noerrorbells                "Disable the sound on error
+set encoding=UTF-8
+set backspace=indent,eol,start  "Fixing ctrl + backspace to delete previous word
+set backspace=2
 set tabstop=4 softtabstop=4     "Insert 3 spaces for a tab
 set shiftwidth=4                "Changes the number of spaces chanracters inserted for indentation
 set smarttab                    "Makes tabbing smarter, it realize you have 2 vs 4
@@ -42,22 +55,18 @@ set smartindent                 "Enables smart indent
 set cmdheight=2                 "More space for displaying messages
 set nu                          "Enables numberline
 set relativenumber              "Enables relative number line
-set nowrap                      "Disable the wrapping of long line test it will be now on single line
-set smartcase                   "Only applies to search patterns that you type 
-set mouse=a                     "Enables the mouse 
+set nowrap                      "Desable the wrapping of long line test it will be now on single line
+set smartcase                   "Only applies to search patterns that you type
+set mouse=a                     "Enables the mounse
 set splitbelow                  "Split horizontal window to below
 set splitright                  "Split the vertical window to the right
 set t_Co=256                    "Support 256 colors
 set autoindent                  "Good auto indent
-set noswapfile                  "Disable the creation of swap file for every file opened in vim
-set nobackup                    "Disable the creation of backup file in vim
-set undodir=~/.vim/undodir      "Save our undo action to a particular directory
-set undofile                    "Creates a undo file 
+set noswapfile                  "Desable the creation of swap file for every file opened in vim
+set nobackup                    "Desable the creation of backup file in vim
+set undodir=$HOME\.vim\undodir      "Save our undo action to a particular directory
+set undofile                    "Creates a undo file
 set incsearch                   "Enables increamental search
-set clipboard=unnamedplus       "Enables the clipboard support in vim now it shares the clipboard of the windows 
-set cursorline                  "Highlight the current line 
-set formatoptions-=cro          "Stop newline continuation of comments
-set colorcolumn=100             "Set the vertical color column after 100 character length
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
@@ -70,22 +79,32 @@ Below are the list of some of the plugins that I personally use.
 These all are really a life-saver to me.
 
 #+BEGIN_SRC 
-call plug#begin('~/.vim/plugged')
-
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-Plug 'morhetz/gruvbox'
-Plug 'jremmen/vim-ripgrep'
-Plug 'tpope/vim-fugitive'
+call plug#begin('$HOME\vimfiles\autoload\')     "Start of vim-plug plugin listing
+"Plug 'morhetz/gruvbox'
+"rainbow brackets for vim
+Plug 'frazrepo/vim-rainbow'
+Plug 'junegunn/goyo.vim'
+"Plugin for colorschemes
+Plug 'flazz/vim-colorschemes'
+"winteractive window manager
+Plug 'romgrk/winteract.vim'
+"ex window
+Plug 'anotherproksy/ez-window'
+Plug 'felixhummel/setcolors.vim'
+Plug 'vim-scripts/Conque-Shell'
+Plug 'gko/vim-coloresque'
+"this plugin enable fullscreen by pressing ctrl + enter
+Plug 'lambdalisue/vim-fullscreen'
 Plug 'preservim/nerdtree'
+Plug 'mhinz/vim-startify'
 Plug 'leafgarland/typescript-vim'
 Plug 'vim-utils/vim-man'
-Plug 'lyuts/vim-rtags'
-"Plug 'git@github.com:kien/ctrlp.vim.git'
-"Plug 'git@github.com:Valloric/YouCompleteMe.git'
-Plug 'ycm-core/YouCompleteMe'
 Plug 'kien/ctrlp.vim'
 Plug 'mbbill/undotree'
+"Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
+"devicons
+"Plug 'ryanoasis/vim-devicons'
 
 call plug#end()                 "End of vim-plug plugin listing
 #+END_SRC
@@ -100,6 +119,12 @@ colorscheme gruvbox             "Setting colorscheme to gruvbox
 set background=dark             "Set background to dark
 #+END_SRC
 
+* FONT
+Setting default font and font-size
+
+#+BEGIN_SRC
+set guifont=Source\ Code\ Pro:h14
+#+END_SRC
 
 * KEYBINDINGS
 Listed below these are some of my fav keybindings that I use.
@@ -137,24 +162,92 @@ nnoremap <silent> <Leader>gd :YcmCompleter GoTo<CR>
 nnoremap <silent> <Leader>gf :YcmCompleter FixIt<CR>
 #+END_SRC
 
+* PERSONAL PREFERENCES
+Here are some of my personal preferences related to `UI`, sound etc.
+
+** To desable errorbell
+#+BEGIN_SRC
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
+#+END_SRC
+
+** Last edit position
+#+BEGIN_SRC
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+#+END_SRC
+
+** Hide GUI
+#+begin_src
+"set guioptions-=m  "menu bar
+"set guioptions-=T  "toolbar
+"set guioptions-=r  "scrollbar
+#+end_src
+
+** Function to enable the GUI
+This function will enable the bar by pressing <F11>
+#+begin_src
+function! ToggleGUICruft()
+  if &guioptions=='i'
+    exec('set guioptions=imTrL')
+  else
+    exec('set guioptions=i')
+  endif
+endfunction
+
+"Setting sortcut to <F11>
+map <F11> <Esc>:call ToggleGUICruft()<cr>
+
+" by default, hide gui menus
+set guioptions=i
+#+end_src
+
+** Fixing Ctrl+Backspace
+Map Ctrl-Backspace to delete the previous word in insert mode.
+#+begin_src
+imap <C-BS> <C-W>
+noremap! <C-BS> <C-w>
+noremap! <C-h> <C-w>
+inoremap <C-w> <C-\><C-o>dB
+inoremap <C-BS> <C-\><C-o>db
+#+end_src
+
+** Favorite
+#+begin_src
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q!<CR>
+nnoremap <leader>x :x<CR>
+
+" shortcut to switch between buffer
+map J :bn<CR>
+map K :bp<CR>
+
+"Changing jk or kj to work or remap to work as escape key
+inoremap jk <Esc>
+inoremap kj <Esc>
+#+end_src
 
 * MISCELLANEOUS
-These are also some of the setting to be imported into the vimrc.
+These are also some of the important settings to be imported into the vimrc.
 
 #+BEGIN_SRC 
-if executable('rg')
-    let g:rg_derive_root='true'
-endif
-"Setting path to ycm config where it is located in my system.
-let g:ycm_global_ycm_extra_conf = "~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py"
-
-"These set some of the directories/files to be ingnored by the ctrlp 
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude standard']
-
 let g:netrw_browse_split=2
 let g:netrw_banner = 0
 let g:netrw_winsize = 25
 
 let g:ctrlp_use_caching = 0
-#+END_SRC
 
+"Set width of goyo
+"autocmd BufRead.BufNewFile /tmp/neomutt* let g:goyo_width=80
+"autocmd BufRead.BufNewFile /tmp/neomutt* :Goyo
+
+"using tab to navigate around the end to start of a code block
+map <TAB> %
+
+"Goyo
+nnoremap <leader>f :Goyo<CR>
+#+END_SRC
