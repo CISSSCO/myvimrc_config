@@ -52,6 +52,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'vim-utils/vim-man'
 Plug 'kien/ctrlp.vim'
 Plug 'mbbill/undotree'
+"Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
 "devicons
 "Plug 'ryanoasis/vim-devicons'
