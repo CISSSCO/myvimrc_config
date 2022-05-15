@@ -3,6 +3,12 @@
 
 * TABLE OF CONTENT :toc:
 - [[#about][ABOUT]]
+- [[#installations][INSTALLATIONS]]
+  - [[#creating-main-files][Creating main files]]
+  - [[#preparing-for-vim-plug][Preparing for vim-plug]]
+  - [[#installing-vim-plug][Installing Vim-Plug]]
+  - [[#installing-plugins][Installing Plugins]]
+  - [[#extras][Extras]]
 - [[#imports][IMPORTS]]
 - [[#plugins][PLUGINS]]
 - [[#colorschemetheme][COLORSCHEME/THEME]]
@@ -31,9 +37,75 @@ This configuaration is mainly for linux user, or mac as well. I am using it
 on linux and it works just fine for me.
 There are also a lot you can do with Vim but I am happy with these config.
 
+* INSTALLATIONS
+
+** Creating main files
+After installing the vim, first we need to create a configuration file of vim (.vimrc) in our home folder
+*** Windows
+#+begin_src
+::goto C:\Users\username\
+cd C:\Users\username\
+
+::create a file name _vimrc
+vim _vimrc
+
+#+end_src
+Paste all the settings in the IMPORT section, save and exit using `:wq`
+*** Unix/Linux
+#+begin_src bash
+cd ~
+vim .vimrc
+#Paste all the settings in the IMPORT section, save and exit using `:wq`
+#+end_src
+After all this we need to install vim-plug
+
+** Preparing for vim-plug
+First create an installation folder
+#+begin_src bash
+cd ~
+mkdir .vim
+cd .vim
+mkdir undodir   #optional required for undodir settings
+#+end_src
+
+** Installing Vim-Plug
+*** Windows
+Run this script in powershell this will install vim-plug
+#+begin_src powershell
+iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+    ni $HOME/vimfiles/autoload/plug.vim -Force
+#+end_src
+*** Unix/Linux
+Run this script in your terminal
+#+begin_src
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+#+end_src
+
+For more detailed installation please visit the [[https://github.com/junegunn/vim-plug][vim-plug repository]]
+
+
+** Installing Plugins
+Now we are ready to install plugins.
+First import all the plugins in our vimrc files
+#+begin_src vimscript
+"After importing the plugins
+"We need to save and source the file
+:source %   "This will compile the file
+
+"Reopen it and in command mode write
+:PlugInstall
+#+end_src
+Now the listed plugins will be installed
+
+** Extras
+Now you can import other setting and keybindings if you want.
+You can also set your own keybindings.
+For more help
+`:help <topic>` in your vim command mode, this will open the doc inside vim
 
 * IMPORTS
-These are basically the  default setting that everyone uses while working in vim.
+These are basically the setting that comes with vim.
 
 The basic functionality of any command is also indicated there in the form
 of comment in the source code.
@@ -45,7 +117,7 @@ filetype indent on
 filetype plugin on
 
 set encoding=UTF-8
-set backspace=indent,eol,start  "Fixing ctrl + backspace to delete previous word
+set backspace=indent,eol,start  "Fixing backspace to delete previous word or letters
 set backspace=2
 set tabstop=4 softtabstop=4     "Insert 3 spaces for a tab
 set shiftwidth=4                "Changes the number of spaces chanracters inserted for indentation
