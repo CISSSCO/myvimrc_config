@@ -11,8 +11,9 @@
   - [[#extras][Extras]]
 - [[#imports][IMPORTS]]
 - [[#plugins][PLUGINS]]
-- [[#colorschemetheme][COLORSCHEME/THEME]]
-- [[#font][FONT]]
+- [[#theme][THEME]]
+  - [[#colorscheme][Colorscheme]]
+  - [[#font][Font]]
 - [[#keybindings][KEYBINDINGS]]
 - [[#personal-preferences][PERSONAL PREFERENCES]]
   - [[#to-desable-errorbell][To desable errorbell]]
@@ -77,13 +78,12 @@ iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
 #+end_src
 *** Unix/Linux
 Run this script in your terminal
-#+begin_src
+#+begin_src bash
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 #+end_src
 
 For more detailed installation please visit the [[https://github.com/junegunn/vim-plug][vim-plug repository]]
-
 
 ** Installing Plugins
 Now we are ready to install plugins.
@@ -101,8 +101,8 @@ Now the listed plugins will be installed
 ** Extras
 Now you can import other setting and keybindings if you want.
 You can also set your own keybindings.
-For more help
-`:help <topic>` in your vim command mode, this will open the doc inside vim
+For more help type:
+:help <topic> in your vim command mode, this will open the doc inside vim
 
 * IMPORTS
 These are basically the setting that comes with vim.
@@ -182,16 +182,17 @@ call plug#end()                 "End of vim-plug plugin listing
 #+END_SRC
 
 
-* COLORSCHEME/THEME
+* THEME
 Using background color as dark, and color scheme is set to gruvbox. I imported
 gruvbox in the plugin section.
 
-#+BEGIN_SRC 
+** Colorscheme
+#+BEGIN_SRC
 colorscheme gruvbox             "Setting colorscheme to gruvbox
 set background=dark             "Set background to dark
 #+END_SRC
 
-* FONT
+** Font
 Setting default font and font-size
 
 #+BEGIN_SRC
@@ -203,7 +204,7 @@ Listed below these are some of my fav keybindings that I use.
 My leader key is set to Space which is lot easier for me.
 
 #+BEGIN_SRC 
-let mapleader = " "             "Leader key set to space bar
+let mapleader = " "             "Leader key set to <space> bar
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
@@ -228,10 +229,6 @@ inoremap kj <Esc>
 "Easy caps c stands for CTRL
 inoremap <c-u> <Esc>viwUi
 inoremap <c-u> viwU<Esc>
-
-
-nnoremap <silent> <Leader>gd :YcmCompleter GoTo<CR>
-nnoremap <silent> <Leader>gf :YcmCompleter FixIt<CR>
 #+END_SRC
 
 * PERSONAL PREFERENCES
@@ -254,6 +251,7 @@ autocmd BufReadPost *
 #+END_SRC
 
 ** Hide GUI
+This will hide the UI component in Gvim (Graphical Vim).
 #+begin_src
 "set guioptions-=m  "menu bar
 "set guioptions-=T  "toolbar
