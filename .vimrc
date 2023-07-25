@@ -54,8 +54,12 @@ Plug 'kien/ctrlp.vim'
 Plug 'mbbill/undotree'
 "Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
+"for comments
+"Plug 'vim-scripts/c.vim'
+"Plug 'tomtom/tcomment_vim' 
 "devicons
 "Plug 'ryanoasis/vim-devicons'
+"C++ Ultisnip
 
 call plug#end()                 "End of vim-plug plugin listing
 
@@ -64,7 +68,7 @@ set background=dark
 colorscheme Tomorrow-Night-Bright
 
 "setting a default font
-set guifont=Source\ Code\ Pro:h14
+set guifont=Source\ Code\ Pro:h22
 
 "To desable errorbell
 set noerrorbells visualbell t_vb=
@@ -173,3 +177,23 @@ autocmd BufReadPost *
 " shortcut to switch between buffer
 map J :bn<CR>
 map K :bp<CR> 
+
+
+"Cursor modification
+highlight Cursor guifg=black guibg=orangered
+highlight iCursor guifg=black guibg=greenyellow
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+"set guicursor+=n-v-c:blinkon0
+"set guicursor+=i:blinkwait0
+
+"Compiler settings
+noremap <F9> <ESC> :w <CR> :!g++  -std=c++14 -o %< % <CR> ./%< <CR>
+inoremap <F9> <ESC> :w <CR> :!g++  -std=c++14 -o %< % <CR> ./%< <CR>
+
+"copying and pasting into system clipboard
+
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
