@@ -21,8 +21,8 @@ set splitbelow                  "Split horizontal window to below
 set splitright                  "Split the vertical window to the right
 set t_Co=256                    "Support 256 colors
 set autoindent                  "Good auto indent
-set noswapfile                  "Desable the creation of swap file for every file opened in vim
 set nobackup                    "Desable the creation of backup file in vim
+set noswapfile                  "Desable the creation of swap file for every file opened in vim
 set undodir=$HOME\.vim\undodir      "Save our undo action to a particular directory
 set undofile                    "Creates a undo file 
 set incsearch                   "Enables increamental search
@@ -188,8 +188,33 @@ set guicursor+=i:ver100-iCursor
 "set guicursor+=i:blinkwait0
 
 "Compiler settings
-noremap <F9> <ESC> :w <CR> :!g++  -std=c++14 -o %< % <CR> ./%< <CR>
-inoremap <F9> <ESC> :w <CR> :!g++  -std=c++14 -o %< % <CR> ./%< <CR>
+"for Windows
+"nnoremap <F9> :!g++ -std=c++11 % -Wall -g -o %< && %< <CR>
+nnoremap <F2> :!g++  -std=c++14  % -Wall -Wextra -Wshadow -g -o %< && %< <CR>
+inoremap <F2> :!g++  -std=c++14  % -Wall -Wextra -Wshadow -g -o %< && %< <CR>
+
+"for windows including input file
+nnoremap <F3> :!g++ -std=c++14 % -Wall -Wextra -Wshadow -g -o %< && %< < input <CR>
+inoremap <F3> :!g++ -std=c++14 % -Wall -Wextra -Wshadow -g -o %< && %< < input <CR>
+
+"Compiler s
+"noremap <F9> <ESC> :w <CR> :!g++  -std=c++14 -o %< % <CR> %< <CR>
+"inoremap <F9> <ESC> :w <CR> :!g++  -std=c++14 -o %< % <CR> %< <CR>
+
+"noremap <F8> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -DONPC -O2 -o %< % && ./%< < inp<CR>
+"inoremap <F8> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -DONPC -O2 -o "%<" "%" && "./%<" < inp<CR>
+ 
+" -pthread
+ 
+"noremap <F9> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+"inoremap <F9> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+ 
+"noremap <F10> <ESC> :w <CR> :!clang++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+"inoremap <F10> <ESC> :w <CR> :!clang++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< <CR>
+ 
+ 
+"noremap <F10> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< < inp<CR>
+"inoremap <F10> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o "%<" "%" && "./%<" < inp<CR>
 
 "copying and pasting into system clipboard
 
