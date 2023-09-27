@@ -190,12 +190,12 @@ set guicursor+=i:ver100-iCursor
 "Compiler settings
 "for Windows
 "nnoremap <F9> :!g++ -std=c++11 % -Wall -g -o %< && %< <CR>
-nnoremap <F2> :!g++  -std=c++14  % -Wall -Wextra -Wshadow -g -o %< && %< <CR>
-inoremap <F2> :!g++  -std=c++14  % -Wall -Wextra -Wshadow -g -o %< && %< <CR>
+"nnoremap <F2> :!g++  -std=c++14  % -Wall -Wextra -Wshadow -g -o %< && %< <CR>
+"inoremap <F2> :!g++  -std=c++14  % -Wall -Wextra -Wshadow -g -o %< && %< <CR>
 
 "for windows including input file
-nnoremap <F3> :!g++ -std=c++14 % -Wall -Wextra -Wshadow -g -o %< && %< < input <CR>
-inoremap <F3> :!g++ -std=c++14 % -Wall -Wextra -Wshadow -g -o %< && %< < input <CR>
+"nnoremap <F3> :!g++ -std=c++14 % -Wall -Wextra -Wshadow -g -o %< && %< < input <CR>
+"inoremap <F3> :!g++ -std=c++14 % -Wall -Wextra -Wshadow -g -o %< && %< < input <CR>
 
 "Compiler s
 "noremap <F9> <ESC> :w <CR> :!g++  -std=c++14 -o %< % <CR> %< <CR>
@@ -215,6 +215,32 @@ inoremap <F3> :!g++ -std=c++14 % -Wall -Wextra -Wshadow -g -o %< && %< < input <
  
 "noremap <F10> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o %< % && ./%< < inp<CR>
 "inoremap <F10> <ESC> :w <CR> :!g++ -fsanitize=address -std=c++17 -Wall -Wextra -Wshadow -DONPC -O2 -o "%<" "%" && "./%<" < inp<CR>
+
+"Compiler settings for C for linux
+"compiling c code
+noremap <F6> <ESC> :w <CR> :!gcc  -g  % -Wall -Wextra -Wshadow  <CR>
+inoremap <F6> <ESC> :w <CR> :!gcc  -g  % -Wall -Wextra -Wshadow  <CR>
+
+"running c code
+noremap <F7> <ESC> :w <CR> :!gcc  -g  % -Wall -Wextra -Wshadow   && ./a.out <CR>
+inoremap <F7> <ESC> :w <CR> :!gcc  -g  % -Wall -Wextra -Wshadow   && ./a.out <CR>
+"Debug c code
+noremap <F8> <ESC> :w <CR> :!gcc  -g  % -Wall -Wextra -Wshadow   && gdb ./a.out <CR>
+inoremap <F8> <ESC> :w <CR> :!gcc  -g  % -Wall -Wextra -Wshadow   && gdb ./a.out <CR>
+
+"Compiler settings for c++
+"compiling c++ code
+noremap <F9> <ESC> :w <CR> :!g++ -std=c++14 -g  % -Wall -Wextra -Wshadow <CR>
+inoremap <F9> <ESC> :w <CR> :!g++ -std=c++14 -g  % -Wall -Wextra -Wshadow <CR>
+"running c++ code
+noremap <F10> <ESC> :w <CR> :!g++ -std=c++14 -g  % -Wall -Wextra -Wshadow   && ./a.out <CR>
+inoremap <F10> <ESC> :w <CR> :!g++ -std=c++14 -g  % -Wall -Wextra -Wshadow   && ./a.out <CR>
+ 
+"compile + run in debug mode in c++
+noremap <F12> <ESC> :w <CR> :!g++ -std=c++14 -g  % -Wall -Wextra -Wshadow   && gdb ./a.out <CR>
+inoremap <F12> <ESC> :w <CR> :!g++ -std=c++14 -g  % -Wall -Wextra -Wshadow   && gdb ./a.out <CR>
+
+
 
 "copying and pasting into system clipboard
 
