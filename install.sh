@@ -1,8 +1,14 @@
 #!/bin/bash
 install(){
-    mkdir ~/.vim
-    mkdir ~/.vim/undodir
-    mkdir ~/.vim/plugged
+    if [ ! -f ~/.vim ]; then
+        mkdir ~/.vim
+    fi
+    if [ ! -f ~/.vim/undodir ]; then
+        mkdir ~/.vim/undodir
+    fi
+    if [ ! -f ~/.vim/plugged ]; then
+        mkdir ~/.vim/plugged
+    fi
     # installing vim plug
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -12,6 +18,7 @@ install(){
         mv .vimrc .vimrc.old
     fi
     cp myvimrc_config/ubuntu/.vimrc ./
+    vim +PlugInstall +qall
 }
 
 install
