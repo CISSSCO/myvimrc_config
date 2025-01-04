@@ -13,11 +13,10 @@ install(){
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-    cd ~
-    if [ -f .vimrc ]; then
-        mv .vimrc .vimrc.old
+    if [ -f ~/.vimrc ]; then
+        mv ~/.vimrc ~/.vimrc.old
     fi
-    cp myvimrc_config/ubuntu/.vimrc ./
+    cp ./myvimrc_config/ubuntu/.vimrc ~/.vimrc
     vim +PlugInstall +qall
 }
 
