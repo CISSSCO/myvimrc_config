@@ -16,7 +16,7 @@ install(){
     if [ -f ~/.vimrc ]; then
         mv ~/.vimrc ~/.vimrc.old
     fi
-    cp ./myvimrc_config/ubuntu/.vimrc ~/.vimrc
+    cp ./ubuntu/.vimrc ~/.vimrc
     vim +PlugInstall +qall
 }
 
