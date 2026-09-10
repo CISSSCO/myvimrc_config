@@ -553,3 +553,466 @@ let g:vimwiki_list = [{
 
 nnoremap <leader>ww :VimwikiIndex<CR>
 nnoremap <leader>wt :VimwikiTabIndex<CR>
+
+
+" =========================================================
+" =============== COMPETITIVE PROGRAMMING =================
+" =========================================================
+
+" CP workspace:
+"
+"   main.cpp   -> source code
+"   input      -> test input
+"   output     -> program output
+"
+" Quick reference:
+"
+"   <leader>pc  Compile
+"   <leader>pr  Run
+"   <leader>px  Compile + Run
+"   <leader>pp  Compile + Run with input/output
+"   <leader>po  Refresh/Open output
+"   <leader>pi  Open input
+"   <leader>pv  Compile + Run + Open output
+"   <leader>pt  Compile with sanitizers
+"   <leader>pm  Compile optimized
+"   <leader>pk  Kill running program
+"
+" =========================================================
+
+
+" -------------------------
+" CP Configuration
+" -------------------------
+
+let g:cp_cpp_std = 'c++17'
+let g:cp_executable = './main'
+let g:cp_input = 'input'
+let g:cp_output = 'output'
+
+
+" -------------------------
+" Create input/output files
+" -------------------------
+
+function! CPEnsureFiles()
+    if !filereadable(g:cp_input)
+        call writefile([], g:cp_input)
+    endif
+
+    if !filereadable(g:cp_output)
+        call writefile([], g:cp_output)
+    endif
+endfunction
+
+
+" -------------------------
+" Compile C++
+" -------------------------
+
+function! CPCompile()
+    update
+
+    call CPEnsureFiles()
+
+    echo "Compiling " . expand('%:t') . "..."
+
+    let l:cmd = 'g++ -std=' . g:cp_cpp_std
+                \ . ' -O2 -Wall -Wextra -Wshadow -g '
+                \ . shellescape(expand('%:p'))
+                \ . ' -o ' . shellescape(g:cp_executable)
+
+    execute 'silent !' . l:cmd
+
+    if v:shell_error == 0
+        echo "\u2713 Compilation successful"
+    else
+        echohl ErrorMsg
+        echo "\u2717 Compilation failed"
+        echohl None
+    endif
+endfunction
+
+
+" -------------------------
+" Run program
+" -------------------------
+
+function! CPRun()
+    call CPEnsureFiles()
+
+    echo "Running..."
+
+    execute '!' . shellescape(g:cp_executable)
+
+    echo "Program finished."
+endfunction
+
+
+" -------------------------
+" Compile + Run
+" -------------------------
+
+function! CPCompileRun()
+    update
+
+    call CPEnsureFiles()
+
+    echo "Compiling..."
+
+    let l:cmd = 'g++ -std=' . g:cp_cpp_std
+                \ . ' -O2 -Wall -Wextra -Wshadow -g '
+                \ . shellescape(expand('%:p'))
+                \ . ' -o ' . shellescape(g:cp_executable)
+
+    execute 'silent !' . l:cmd
+
+    if v:shell_error != 0
+        echohl ErrorMsg
+        echo "\u2717 Compilation failed"
+        echohl None
+        return
+    endif
+
+    echo "\u2713 Compilation successful"
+    echo "Running..."
+
+    execute '!' . shellescape(g:cp_executable)
+endfunction
+
+
+" -------------------------
+" Compile + Run with
+" input -> output
+" -------------------------
+
+function! CPTest()
+    update
+
+    call CPEnsureFiles()
+
+    echo "Compiling..."
+
+    let l:compile = 'g++ -std=' . g:cp_cpp_std
+                \ . ' -O2 -Wall -Wextra -Wshadow -g '
+                \ . shellescape(expand('%:p'))
+                \ . ' -o ' . shellescape(g:cp_executable)
+
+    execute 'silent !' . l:compile
+
+    if v:shell_error != 0
+        echohl ErrorMsg
+        echo "\u2717 Compilation failed"
+        echohl None
+        return
+    endif
+
+    echo "\u2713 Compilation successful"
+    echo "Running test..."
+
+    let l:run = shellescape(g:cp_executable)
+                \ . ' < ' . shellescape(g:cp_input)
+                \ . ' > ' . shellescape(g:cp_output)
+
+    execute 'silent !' . l:run
+
+    " Tell Vim that external files may have changed.
+    checktime
+
+    echo "\u2713 Test completed"
+endfunction
+
+
+" -------------------------
+" Compile + Run + Open output
+" -------------------------
+
+function! CPTestView()
+    call CPTest()
+
+    " Open output in the current window.
+    execute 'edit ' . fnameescape(g:cp_output)
+
+    " Reload the file from disk.
+    silent! checktime
+
+    normal! gg
+endfunction
+
+
+" -------------------------
+" Sanitizer build
+" -------------------------
+
+function! CPSanitize()
+    update
+
+    echo "Building with Address/Undefined Behavior Sanitizers..."
+
+    let l:cmd = 'g++ -std=' . g:cp_cpp_std
+                \ . ' -Wall -Wextra -Wshadow -g '
+                \ . '-fsanitize=address,undefined '
+                \ . shellescape(expand('%:p'))
+                \ . ' -o ' . shellescape(g:cp_executable)
+
+    execute '!' . l:cmd
+
+    if v:shell_error == 0
+        echo "\u2713 Sanitizer build successful"
+    else
+        echohl ErrorMsg
+        echo "\u2717 Sanitizer build failed"
+        echohl None
+    endif
+endfunction
+
+
+" -------------------------
+" Optimized build
+" -------------------------
+
+function! CPOptimize()
+    update
+
+    echo "Building optimized version..."
+
+    let l:cmd = 'g++ -std=' . g:cp_cpp_std
+                \ . ' -O2 -pipe '
+                \ . '-Wall -Wextra -Wshadow '
+                \ . shellescape(expand('%:p'))
+                \ . ' -o ' . shellescape(g:cp_executable)
+
+    execute '!' . l:cmd
+
+    if v:shell_error == 0
+        echo "\u2713 Optimized build successful"
+    else
+        echohl ErrorMsg
+        echo "\u2717 Optimized build failed"
+        echohl None
+    endif
+endfunction
+
+
+" -------------------------
+" Kill running program
+" -------------------------
+
+function! CPKill()
+    silent! execute '!pkill -f ' . shellescape(fnamemodify(g:cp_executable, ':t'))
+    echo "Program terminated."
+endfunction
+
+
+" -------------------------
+" Open input
+" -------------------------
+
+function! CPOpenInput()
+    call CPEnsureFiles()
+
+    execute 'edit ' . fnameescape(g:cp_input)
+endfunction
+
+
+" -------------------------
+" Open output
+" -------------------------
+
+function! CPOpenOutput()
+    call CPEnsureFiles()
+
+    execute 'edit ' . fnameescape(g:cp_output)
+
+    silent! checktime
+
+    normal! gg
+endfunction
+
+
+" =========================================================
+" CP Commands
+" =========================================================
+
+command! CPCompile     call CPCompile()
+command! CPRun         call CPRun()
+command! CPCompileRun  call CPCompileRun()
+command! CPTest        call CPTest()
+command! CPTestView    call CPTestView()
+command! CPSanitize    call CPSanitize()
+command! CPOptimize    call CPOptimize()
+command! CPKill        call CPKill()
+command! CPOpenInput   call CPOpenInput()
+command! CPOpenOutput  call CPOpenOutput()
+
+
+" =========================================================
+" CP Keybindings
+" =========================================================
+
+" Compile
+nnoremap <silent> <leader>pc :CPCompile<CR>
+
+" Run
+nnoremap <silent> <leader>pr :CPRun<CR>
+
+" Compile + Run
+nnoremap <silent> <leader>px :CPCompileRun<CR>
+
+" Compile + run using input -> output
+nnoremap <silent> <leader>pp :CPTest<CR>
+
+" Compile + run + immediately view output
+nnoremap <silent> <leader>pv :CPTestView<CR>
+
+" Open input
+nnoremap <silent> <leader>pi :CPOpenInput<CR>
+
+" Open output
+nnoremap <silent> <leader>po :CPOpenOutput<CR>
+
+" Sanitizer build
+nnoremap <silent> <leader>pt :CPSanitize<CR>
+
+" Optimized build
+nnoremap <silent> <leader>pm :CPOptimize<CR>
+
+" Kill running program
+nnoremap <silent> <leader>pk :CPKill<CR>
+
+
+" =========================================================
+" CP Convenience
+" =========================================================
+
+" Automatically create input/output when opening a C++ file.
+augroup CPFiles
+    autocmd!
+    autocmd BufEnter *.cpp call CPEnsureFiles()
+augroup END
+
+" =========================================================
+" ===================== CP HELP ===========================
+" =========================================================
+
+function! CPHelp()
+    new
+    setlocal buftype=nofile
+    setlocal bufhidden=wipe
+    setlocal noswapfile
+    setlocal nobuflisted
+    setlocal nowrap
+    setlocal filetype=text
+
+    call setline(1, [
+                \ '=========================================================',
+                \ '              COMPETITIVE PROGRAMMING',
+                \ '=========================================================',
+                \ '',
+                \ '  FILES',
+                \ '  -------------------------------------------------------',
+                \ '  main.cpp       Source code',
+                \ '  input          Test input',
+                \ '  output         Program output',
+                \ '  main           Compiled executable',
+                \ '',
+                \ '  COMPILATION / RUNNING',
+                \ '  -------------------------------------------------------',
+                \ '  <Space>pc      Compile',
+                \ '  <Space>pr      Run program',
+                \ '  <Space>px      Compile + Run',
+                \ '  <Space>pp      Compile + input -> output',
+                \ '  <Space>pv      Compile + test + view output',
+                \ '',
+                \ '  TESTING',
+                \ '  -------------------------------------------------------',
+                \ '  <Space>pi      Open input',
+                \ '  <Space>po      Open output',
+                \ '  <Space>pt      Compile with sanitizers',
+                \ '  <Space>pm      Compile optimized version',
+                \ '  <Space>pk      Kill running program',
+                \ '',
+                \ '  COMMANDS',
+                \ '  -------------------------------------------------------',
+                \ '  :CPCompile     Compile current C++ file',
+                \ '  :CPRun         Run compiled program',
+                \ '  :CPCompileRun  Compile + run',
+                \ '  :CPTest        Compile + test input/output',
+                \ '  :CPTestView    Compile + test + view output',
+                \ '  :CPSanitize    Build with sanitizers',
+                \ '  :CPOptimize    Build optimized version',
+                \ '  :CPOpenInput   Open input',
+                \ '  :CPOpenOutput  Open output',
+                \ '  :CPKill        Kill running program',
+                \ '  :Contest       Setup Contest files',
+                \ '',
+                \ '  :HelpCP        Show this help',
+                \ '',
+                \ '=========================================================',
+                \ ])
+
+    setlocal nomodifiable
+
+    nnoremap <silent> <buffer> q :bd!<CR>
+    nnoremap <silent> <buffer> <Esc> :bd!<CR>
+endfunction
+
+" IMPORTANT: Vim user-defined commands must start uppercase
+command! HelpCP call CPHelp()
+
+nnoremap <silent> <leader>ph :HelpCP<CR>
+" =========================================================
+" =================== CP CONTEST SETUP ====================
+" =========================================================
+
+function! CPContest(...)
+    " Use supplied directory name, otherwise default to "contest"
+    let l:dir = a:0 ? a:1 : 'contest'
+
+    " Create directory
+    call mkdir(l:dir, 'p')
+
+    " Create full paths
+    let l:main   = l:dir . '/main.cpp'
+    let l:input  = l:dir . '/input'
+    let l:output = l:dir . '/output'
+
+    " Create input/output if they don't exist
+    if !filereadable(l:input)
+        call writefile([], l:input)
+    endif
+
+    if !filereadable(l:output)
+        call writefile([], l:output)
+    endif
+
+    " Create main.cpp with CP template if it doesn't exist
+    if !filereadable(l:main)
+        call writefile([
+                    \ '#include <bits/stdc++.h>',
+                    \ 'using namespace std;',
+                    \ '',
+                    \ '#define ll long long',
+                    \ '#define endl ''\n''',
+                    \ '',
+                    \ 'void solve() {',
+                    \ '',
+                    \ '}',
+                    \ '',
+                    \ 'int main() {',
+                    \ '    ios::sync_with_stdio(false);',
+                    \ '    cin.tie(nullptr);',
+                    \ '',
+                    \ '    solve();',
+                    \ '',
+                    \ '    return 0;',
+                    \ '}',
+                    \ ], l:main)
+    endif
+
+    " Open main.cpp
+    execute 'edit ' . fnameescape(l:main)
+endfunction
+
+command! -nargs=? Contest call CPContest(<f-args>)
+
